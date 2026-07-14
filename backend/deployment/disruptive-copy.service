@@ -1,0 +1,20 @@
+[Unit]
+Description=Disruptive Advertising Copy — Flask/Gunicorn
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/disruptive-copy/backend
+Environment="PATH=/var/www/disruptive-copy/venv/bin"
+ExecStart=/var/www/disruptive-copy/venv/bin/gunicorn \
+    --workers 3 \
+    --bind 127.0.0.1:5000 \
+    --timeout 60 \
+    --access-logfile /var/log/disruptive-copy/access.log \
+    --error-logfile /var/log/disruptive-copy/error.log \
+    wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

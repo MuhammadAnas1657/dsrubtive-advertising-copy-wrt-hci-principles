@@ -1,0 +1,44 @@
+# ============================================================
+# render.yaml — Render Blueprint Configuration
+# Disruptive Advertising Copy — HCI Subject Project
+#
+# This file tells Render exactly how to build and run your app.
+# Commit this file to the root of your Git repository.
+# ============================================================
+
+services:
+  - type: web
+    name: disruptive-advertising-copy
+    runtime: python
+    region: oregon               # Free tier region (Oregon, US)
+    plan: free                   # Use "starter" for paid plan
+
+    # --- Build Settings ---
+    rootDir: backend             # All Python code lives here
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:application --workers 2 --threads 2 --timeout 120 --bind 0.0.0.0:$PORT
+
+    # --- Environment Variables ---
+    # Non-secret values are defined here.
+    # SECRET values must be added manually in the Render Dashboard → Environment tab.
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_DEBUG
+        value: "0"
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      # Add these in Render Dashboard (mark as Secret):
+      # SECRET_KEY      → generate with: python -c "import secrets; print(secrets.token_hex(32))"
+      # SMTP_HOST       → e.g. smtp.gmail.com
+      # SMTP_PORT       → 587
+      # SMTP_USER       → your-email@gmail.com
+      # SMTP_PASS       → your Gmail App Password
+      # NOTIFY_EMAIL    → where to receive form submissions
+      # ADMIN_KEY       → key to view /api/submissions
+
+    # --- Health Check ---
+    healthCheckPath: /api/health
+
+    # --- Auto-deploy ---
+    autoDeploy: true            # Redeploy automatically on every git push

@@ -1,0 +1,541 @@
+/* ========================================
+   IMPROVED.CSS — HCI-Enhanced version styles
+   Applies 10 HCI principles on top of original
+   ======================================== */
+
+/* === HCI PRINCIPLE 1: VISIBILITY OF SYSTEM STATUS ===
+   Scroll progress bar + page indicators */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-red), #f97316);
+  z-index: 9999;
+  width: 0%;
+  transition: width 0.1s linear;
+  border-radius: 0 2px 2px 0;
+}
+
+.section-indicator {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.section-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+.section-dot::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--color-dark);
+  color: var(--color-white);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+.section-dot:hover::after { opacity: 1; }
+.section-dot.active {
+  background: var(--color-red);
+  transform: scale(1.4);
+}
+
+/* === HCI PRINCIPLE 2: MATCH BETWEEN SYSTEM & REAL WORLD ===
+   Plain language labels + clearer CTAs */
+.plain-lang-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(198,29,35,0.08);
+  border: 1px solid rgba(198,29,35,0.2);
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-red);
+  margin-bottom: 16px;
+}
+
+/* === HCI PRINCIPLE 3: USER CONTROL & FREEDOM ===
+   Dismissable banners + form back navigation */
+.notification-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  z-index: 4000;
+  background: var(--color-dark);
+  color: var(--color-white);
+  padding: 14px 20px 14px 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  min-width: 280px;
+  max-width: 420px;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.notification-banner.show {
+  transform: translateX(-50%) translateY(0);
+}
+.notification-banner .notif-icon { font-size: 18px; flex-shrink: 0; }
+.notification-banner .notif-msg { flex: 1; line-height: 1.4; }
+.notification-banner .notif-dismiss {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0 0 0 8px;
+  line-height: 1;
+  transition: color var(--transition-fast);
+  flex-shrink: 0;
+}
+.notification-banner .notif-dismiss:hover { color: var(--color-white); }
+
+/* === HCI PRINCIPLE 4: CONSISTENCY & STANDARDS ===
+   Unified button + spacing design tokens */
+.btn-improved-primary {
+  background: var(--color-red);
+  color: var(--color-white);
+  padding: 15px 32px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  border: 2px solid var(--color-red);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-med);
+  min-height: 52px;
+  cursor: pointer;
+}
+.btn-improved-primary:hover {
+  background: var(--color-red-dark);
+  border-color: var(--color-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(198,29,35,0.35);
+}
+.btn-improved-secondary {
+  background: transparent;
+  color: var(--color-dark);
+  padding: 15px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  border: 2px solid #d0d0d0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all var(--transition-med);
+  min-height: 52px;
+  cursor: pointer;
+}
+.btn-improved-secondary:hover {
+  border-color: var(--color-dark);
+  transform: translateY(-2px);
+}
+
+/* === HCI PRINCIPLE 5: ERROR PREVENTION ===
+   Real-time validation feedback */
+.field-hint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--color-gray);
+  margin-top: 5px;
+}
+.field-hint::before { content: 'ℹ️'; font-size: 11px; }
+
+.field-valid {
+  border-color: #10b981 !important;
+}
+.field-valid-msg {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: #059669;
+  margin-top: 5px;
+  font-weight: 500;
+}
+.field-valid-msg::before { content: '✓'; font-weight: 700; }
+
+.password-strength {
+  height: 4px;
+  border-radius: 2px;
+  margin-top: 6px;
+  transition: background var(--transition-fast), width var(--transition-fast);
+}
+
+/* === HCI PRINCIPLE 6: RECOGNITION OVER RECALL ===
+   Breadcrumbs + persistent anchors + tooltips */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--color-gray);
+  margin-bottom: 20px;
+}
+.breadcrumbs a { color: var(--color-red); }
+.breadcrumbs .sep { color: #ccc; }
+
+/* Sticky section-nav (secondary navbar) */
+.section-subnav {
+  position: sticky;
+  top: 72px;
+  z-index: 90;
+  background: var(--color-white);
+  border-bottom: 2px solid var(--color-gray-light);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.section-subnav::-webkit-scrollbar { display: none; }
+.section-subnav-inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 24px;
+}
+.subnav-link {
+  padding: 14px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-gray);
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.subnav-link:hover { color: var(--color-dark); }
+.subnav-link.active { color: var(--color-red); border-bottom-color: var(--color-red); }
+
+/* Tooltip */
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-dark);
+  color: var(--color-white);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+  z-index: 100;
+}
+[data-tooltip]:hover::after { opacity: 1; }
+
+/* === HCI PRINCIPLE 7: FLEXIBILITY & EFFICIENCY ===
+   Keyboard shortcuts + skip link */
+.keyboard-shortcut-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--color-gray);
+}
+.keyboard-shortcut-badge kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--color-dark);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+
+.skip-to-main {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  background: var(--color-red);
+  color: var(--color-white);
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 0 0 4px 4px;
+  z-index: 10000;
+  transition: top var(--transition-fast);
+  text-decoration: none;
+}
+.skip-to-main:focus { top: 0; }
+
+/* === HCI PRINCIPLE 8: AESTHETIC & MINIMALIST ===
+   More whitespace, cleaner layout */
+.improved-hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+.improved-section {
+  padding: 96px 0;
+}
+.improved-section + .improved-section {
+  padding-top: 0;
+}
+.card-clean {
+  background: var(--color-white);
+  border: 1px solid #ebebeb;
+  border-radius: 8px;
+  padding: 32px;
+  transition: box-shadow var(--transition-med), transform var(--transition-med);
+}
+.card-clean:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+/* === HCI PRINCIPLE 9: ERROR RECOVERY ===
+   Friendly error messages + retry */
+.error-state {
+  text-align: center;
+  padding: 32px 24px;
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 8px;
+  display: none;
+}
+.error-state.show { display: block; }
+.error-state .error-icon { font-size: 36px; margin-bottom: 12px; }
+.error-state h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #c53030;
+  margin-bottom: 8px;
+}
+.error-state p {
+  font-size: 14px;
+  color: #718096;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.btn-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--color-red);
+  color: var(--color-white);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  border: none;
+}
+.btn-retry:hover { background: var(--color-red-dark); }
+
+/* === HCI PRINCIPLE 10: ACCESSIBILITY (WCAG 2.1 AA) ===
+   Focus rings, high contrast, ARIA-friendly */
+
+/* Visible focus rings (not the ugly browser default) */
+*:focus-visible {
+  outline: 3px solid #0ea5e9;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  .btn-improved-primary { border: 2px solid ButtonText; }
+  .nav-toggle-btn { border: 2px solid ButtonText; }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body.improved-page {
+    background: #0f0f0f;
+    color: #e8e8e8;
+  }
+  body.improved-page .navbar {
+    background: #161616;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  body.improved-page .card-clean {
+    background: #1c1c1c;
+    border-color: rgba(255,255,255,0.08);
+  }
+  body.improved-page .section-subnav {
+    background: #161616;
+    border-bottom-color: rgba(255,255,255,0.06);
+  }
+  body.improved-page .subnav-link { color: rgba(255,255,255,0.4); }
+  body.improved-page .subnav-link:hover { color: rgba(255,255,255,0.8); }
+}
+
+/* Larger tap targets (mobile) */
+@media (max-width: 768px) {
+  .btn-improved-primary,
+  .btn-improved-secondary {
+    min-height: 52px;
+    width: 100%;
+    justify-content: center;
+  }
+  .section-indicator { display: none; }
+  .section-subnav-inner { padding: 0 12px; }
+}
+
+/* === IMPROVED FORM STEPS === */
+.improved-form-progress {
+  margin-bottom: 28px;
+}
+.step-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 8px;
+}
+.step-node {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e5e5e5;
+  color: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+.step-node.active {
+  background: var(--color-red);
+  color: var(--color-white);
+  box-shadow: 0 0 0 4px rgba(198,29,35,0.2);
+}
+.step-node.done {
+  background: #10b981;
+  color: var(--color-white);
+}
+.step-connector {
+  flex: 1;
+  height: 2px;
+  background: #e5e5e5;
+  transition: background var(--transition-med);
+}
+.step-connector.done { background: #10b981; }
+.step-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-gray);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* === IMPROVED HERO DIFFERENCES === */
+.hero-improved-cta-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+.hero-improved-cta-group .cta-sublabel {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.06em;
+}
+
+/* HCI label ribbon for improved page */
+.hci-label-ribbon {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  z-index: 3000;
+  border-radius: 0 8px 0 0;
+}
+
+/* HCI annotation tooltips (visible on hover for prof demo) */
+.hci-annotation {
+  position: relative;
+}
+.hci-annotation-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: help;
+  z-index: 10;
+}
+.hci-annotation-badge::after {
+  content: attr(data-hci);
+  position: absolute;
+  top: 24px;
+  right: 0;
+  background: var(--color-dark);
+  color: var(--color-white);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: nowrap;
+  max-width: 220px;
+  white-space: normal;
+  width: 200px;
+  line-height: 1.4;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+  z-index: 50;
+}
+.hci-annotation-badge:hover::after { opacity: 1; }
